@@ -15,7 +15,7 @@
 // INCLUDES
 //-----------------------------------------------------------------------
 #include <p32xxxx.h>	// replace with <xc.h> for CCI
-// #include <stdint.h>	// uncomment for CCI
+// #include <stdint.h>	// uncomment for CCIt rig
 #include <stdio.h>
 #include <plib.h>
 
@@ -94,6 +94,7 @@ char * fixed2string(
         val = -val;
     } else neg = FALSE;
 
+    /*
     // isolate the whole part and the fraction [part]
 	YOUR CODE GOES HERE
 	⁞
@@ -108,6 +109,7 @@ char * fixed2string(
     // result is MS digit first so start at ‘.’ In buf and go down in buffer   
 	YOUR CODE GOES HERE
 	⁞
+    */
     buf[i] = '\0'; // End of string marker
 
     return &buf[startIndex];
