@@ -120,7 +120,7 @@ char * fixed2string(
     // insert minus sign if negative
 	if ( neg == true )
     {
-        buf[31] = '-';
+        buf[startIndex] = '-';
     }
     
     // convert the fraction part by continued multiplication
