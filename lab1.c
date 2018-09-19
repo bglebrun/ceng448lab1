@@ -96,19 +96,26 @@ char * fixed2string(
 
     
     // isolate the whole part and the fraction [part]
-	YOUR CODE GOES HERE
-	⁞
+	
     // convert the whole part by continued division
     // result is LS digit first so start at '.' in buf and go up in buffer
-	YOUR CODE GOES HERE
-	⁞
+            
+    //****REPLACE WHOLE WITH WHAT VAR BEN USES IN HIS CODE****
+    //i is the size of the whole number portion -1 due to sign bit
+    for ( i = (bufSize - radixPt) - 1 ; i > 0; i-- )
+    {
+        buf[i] = "0123456789abcdef"[whole % base];
+    }
+    
     // insert minus sign if negative
-	YOUR CODE GOES HERE
-	⁞
+	if ( neg == true )
+    {
+        buf[31] = '-';
+    }
+    
     // convert the fraction part by continued multiplication
-    // result is MS digit first so start at ‘.’ In buf and go down in buffer   
-	YOUR CODE GOES HERE
-	⁞
+    // result is MS digit first so start at '.' In buf and go down in buffer   
+	for ( i = (radixPt - 1))
     
     buf[i] = '\0'; // End of string marker
 
