@@ -96,8 +96,17 @@ char * fixed2string(
 
     
     // isolate the whole part and the fraction [part]
-	YOUR CODE GOES HERE
-	⁞
+    j = 0;
+    whole = val;
+    frac = val;
+	for(i=0; i < noFracBits; i++) {
+        whole>>1;
+        wholeBits++;
+        j = j | 1;
+        j << 1;
+    }
+    frac = frac & j;
+    
     // convert the whole part by continued division
     // result is LS digit first so start at '.' in buf and go up in buffer
 	YOUR CODE GOES HERE
