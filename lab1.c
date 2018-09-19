@@ -114,6 +114,7 @@ char * fixed2string(
     //i is the size of the whole number portion -1 due to sign bit
     for ( i = (bufSize - radixPt) - 1 ; i > 0; i-- )
     {
+        whole = whole/base;
         buf[i] = "0123456789abcdef"[whole % base];
     }
     
