@@ -134,8 +134,11 @@ char * fixed2string(
 	for ( i = (radixPt - 1); i > 0; i--)
     {
         //Dec value is whole number portion of mult result
-        buf[i] =  "0123456789abcdef"[(frac * base)<<base];
-        frac = frac * base;
+        buf[i] =  "0123456789abcdef"[(frac * base)>>base];
+        //Do mult and shift value to get rid of int portion accounting for sign bit
+        frac = (frac * base) << ( (bufSize - base) - 1);
+        //Shift back
+        frac = frac >> ( (bufSize - base) - 1);
     }
     
     buf[i] = '\0'; // End of string marker
