@@ -14,6 +14,7 @@
 //-----------------------------------------------------------------------
 // INCLUDES
 //-----------------------------------------------------------------------
+#define _SUPPRESS_PLIB_WARNING 1
 #include <p32xxxx.h>	// replace with <xc.h> for CCI
 // #include <stdint.h>	// uncomment for CCIt rig
 #include <stdio.h>
@@ -92,7 +93,9 @@ char * fixed2string(
     if (val < 0) {
         neg = TRUE;
         val = -val;
-    } else neg = FALSE;
+    } 
+    
+    else neg = FALSE;
 
     
     // isolate the whole part and the fraction [part]
@@ -112,14 +115,16 @@ char * fixed2string(
             
     //****REPLACE WHOLE WITH WHAT VAR BEN USES IN HIS CODE****
     //i is the size of the whole number portion -1 due to sign bit
-    for ( i = (bufSize - radixPt) - 1 ; i > 0; i-- )
+    for ( i = (radixPt + 1) ; i < bufSize; i++ )
     {
-        whole = whole/base;
+        //Get value to fill string
         buf[i] = "0123456789abcdef"[whole % base];
+        //Do intiger division to get next val to mod with
+        whole = whole/base;
     }
     
     // insert minus sign if negative
-	if ( neg == true )
+	if ( neg == TRUE )
     {
         buf[31] = '-';
     }
@@ -127,6 +132,9 @@ char * fixed2string(
     // convert the fraction part by continued multiplication
     // result is MS digit first so start at '.' In buf and go down in buffer   
 	for ( i = (radixPt - 1))
+    {
+        
+    }
     
     buf[i] = '\0'; // End of string marker
 
