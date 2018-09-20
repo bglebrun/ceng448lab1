@@ -99,11 +99,11 @@ char * fixed2string(
 
     
     // isolate the whole [part] and the fraction [part]
-    j = 0;
     whole = val;
     frac = val;
-	for(i=0; i < noFracBits; i++) {
-        whole>>1;
+    whole = whole >> noFracBits;
+    j = whole;
+	for(;j; j = j>>1) {
         wholeBits++;
     }
     j = (1 << noFracBits) - 1;
