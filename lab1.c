@@ -105,9 +105,8 @@ char * fixed2string(
 	for(i=0; i < noFracBits; i++) {
         whole>>1;
         wholeBits++;
-        j = j | 0x00000001b;
-        j << 1;
     }
+    j = (1 << noFracBits) - 1;
     frac = frac & j;
 
     // convert the whole part by continued division
