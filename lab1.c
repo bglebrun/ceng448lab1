@@ -103,7 +103,7 @@ char * fixed2string(
     frac = val;
     whole = whole >> noFracBits;
     j = whole;
-	for(;j; j = j>>1) {
+	for(;j!=0; j = j>>1) {
         wholeBits++;
     }
     j = (1 << noFracBits) - 1;
