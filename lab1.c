@@ -102,13 +102,21 @@ char * fixed2string(
     whole = val;
     frac = val;
     whole = whole >> noFracBits;
-    j = whole;
-	for(;j!=0; j = j>>1) {
+    
+    wholeBits = 0;
+    
+	for( j = whole;j!=0; j = j>>1) {
         wholeBits++;
+        printf("\n\r j: %d \n\r", j);
     }
     j = (1 << noFracBits) - 1;
     frac = frac & j;
-
+    printf("\n\r Val: %d \n\r", val);
+    printf("\n\r Whole: %d \n\r", whole);
+    printf("\n\r wholeBits: %d \n\r", wholeBits);
+    printf("\n\r Frac: %d \n\r", frac);
+    printf("\n\r j: %d \n\r", j);
+    
     // convert the whole part by continued division
     // result is LS digit first so start at '.' in buf and go up in buffer
             
