@@ -98,7 +98,7 @@ char * fixed2string(
     else neg = FALSE;
 
     
-    // isolate the whole part and the fraction [part]
+    // isolate the whole [part] and the fraction [part]
     j = 0;
     whole = val;
     frac = val;
@@ -131,9 +131,11 @@ char * fixed2string(
     
     // convert the fraction part by continued multiplication
     // result is MS digit first so start at '.' In buf and go down in buffer   
-	for ( i = (radixPt - 1))
+	for ( i = (radixPt - 1); i > 0; i--)
     {
-        
+        //Dec value is whole number portion of mult result
+        buf[i] =  "0123456789abcdef"[(frac * base)<<base];
+        frac = frac * base;
     }
     
     buf[i] = '\0'; // End of string marker
