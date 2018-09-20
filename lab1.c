@@ -20,6 +20,17 @@
 #include <stdio.h>
 #include <plib.h>
 
+#define BYTE_TO_BINARY_PATTERN "%c%c%c%c%c%c%c%c"
+#define BYTE_TO_BINARY(byte)  \
+  (byte & 0x80 ? '1' : '0'), \
+  (byte & 0x40 ? '1' : '0'), \
+  (byte & 0x20 ? '1' : '0'), \
+  (byte & 0x10 ? '1' : '0'), \
+  (byte & 0x08 ? '1' : '0'), \
+  (byte & 0x04 ? '1' : '0'), \
+  (byte & 0x02 ? '1' : '0'), \
+  (byte & 0x01 ? '1' : '0') 
+
 //-----------------------------------------------------------------------
 // PRAGMA
 //-----------------------------------------------------------------------
@@ -111,10 +122,10 @@ char * fixed2string(
     }
     j = (1 << noFracBits) - 1;
     frac = frac & j;
+    printf("Frac: " BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(frac));
     printf("\n\r Val: %d \n\r", val);
     printf("\n\r Whole: %d \n\r", whole);
     printf("\n\r wholeBits: %d \n\r", wholeBits);
-    printf("\n\r Frac: %d \n\r", frac);
     printf("\n\r j: %d \n\r", j);
     
     // convert the whole part by continued division
