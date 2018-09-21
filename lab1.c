@@ -153,17 +153,15 @@ char * fixed2string(
     // convert the fraction part by continued multiplication
     // result is MS digit first so start at '.' In buf and go down in buffer 
     printf("\n\r Frac: %d \n\r", frac);
-	for ( i = (radixPt - 1); i > 0; i--)
+	for ( i = (radixPt - 1); (i > 0) & (frac > 0); i--)
     {
         //Dec value is whole number portion of mult result
-        j = frac * base;
-        j = j >> noDigits;
-        buf[i] =  "0123456789abcdef"[j];
+        frac *= base;
+        buf[i] =  "0123456789abcdef"[ frac >> (noFracBits + 1)];
         printf("\n\r Buf: %c\n\r", buf[i]);
         //Do mult and shift value to get rid of int portion accounting for sign bit
-        frac = (frac * base) << ( (bufSize - base) - 1);
         //Shift back
-        frac = frac >> ( (bufSize - base) - 1);
+        frac &= ((1 << noFracBits ) - 1);
         printf("\n\r Frac: %d \n\r", (frac));
     }
     
