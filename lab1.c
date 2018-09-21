@@ -91,6 +91,7 @@ char * fixed2string(
 {
     unsigned int neg, radixPt, whole, wholeBits, frac, fracDigit, startIndex, i, j;
 
+    printf("\n\r Val: %d \n\r", val);
     // Error checks
     if (noFracBits > 31) return ("ERROR noFracBits > 31");
     if (base < 2) return ("base too small");
@@ -118,15 +119,16 @@ char * fixed2string(
     
 	for( j = whole;j!=0; j = j>>1) {
         wholeBits++;
-        printf("\n\r j: %d \n\r", j);
     }
+    printf("\n\r Whole: %d \n\r", whole);
     j = (1 << noFracBits) - 1;
     frac = frac & j;
+    /*
     printf("Frac: " BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(frac));
     printf("\n\r Val: %d \n\r", val);
     printf("\n\r Whole: %d \n\r", whole);
     printf("\n\r wholeBits: %d \n\r", wholeBits);
-    printf("\n\r j: %d \n\r", j);
+    printf("\n\r j: %d \n\r", j);*/
     
     // convert the whole part by continued division
     // result is LS digit first so start at '.' in buf and go up in buffer
@@ -137,6 +139,7 @@ char * fixed2string(
     {
         //Get value to fill string
         buf[i] = "0123456789abcdef"[whole % base];
+        //printf("\n\r %d \n\r", whole%base );
         //Do intiger division to get next val to mod with
         whole = whole/base;
     }
@@ -148,15 +151,20 @@ char * fixed2string(
     }
     
     // convert the fraction part by continued multiplication
-    // result is MS digit first so start at '.' In buf and go down in buffer   
+    // result is MS digit first so start at '.' In buf and go down in buffer 
+    printf("\n\r Frac: %d \n\r", frac);
 	for ( i = (radixPt - 1); i > 0; i--)
     {
         //Dec value is whole number portion of mult result
-        buf[i] =  "0123456789abcdef"[(frac * base)>>base];
+        j = frac * base;
+        j = j >> noDigits;
+        buf[i] =  "0123456789abcdef"[j];
+        printf("\n\r Buf: %c\n\r", buf[i]);
         //Do mult and shift value to get rid of int portion accounting for sign bit
         frac = (frac * base) << ( (bufSize - base) - 1);
         //Shift back
         frac = frac >> ( (bufSize - base) - 1);
+        printf("\n\r Frac: %d \n\r", (frac));
     }
     
     buf[i] = '\0'; // End of string marker
@@ -212,11 +220,11 @@ main() {
         printf("\r\nvolts = %f \r\n", volts);
 
         a = a * 0x0D33; // 3.3 scaled 10, product scaled 20, (adc * 3.3 / 1024) * 1024
-
+/*
         putsU1("\r\r\nVoltage by fixed point = ");
         putsU1(fixed2string(a, 20, 10, 3, stringBuffer, sizeof (stringBuffer)));
         putsU1("\r\r\n");
-
+*/
         putsU1("\r\r\n Test 1:  ");
         putsU1(fixed2string(0xffffffa0, 7, 10, 3, stringBuffer, sizeof (stringBuffer)));
         putsU1("\r\r\n");
@@ -284,6 +292,8 @@ main() {
         putsU1("alpha*beta + gamma s5= ");
         putsU1(fixed2string(result * 10000, 5, 2, 116, stringBuffer, sizeof (stringBuffer)));
         putsU1("\r\r\n");
+        
+        return 0;
 
     } // main loop
 } // main
