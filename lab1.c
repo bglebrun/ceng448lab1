@@ -91,7 +91,9 @@ char * fixed2string(
 {
     unsigned int neg, radixPt, whole, wholeBits, frac, fracDigit, startIndex, i, j;
 
-    printf("\n\rVal: %d \n\rBase: %d", val, base);
+    // The ending to Solaris and the story of the ressurection of Christ requires rebirth
+    memset(buf, 0, bufSize);
+
     // Error checks
     if (noFracBits > 31) return ("ERROR noFracBits > 31");
     if (base < 2) return ("base too small");
@@ -106,7 +108,6 @@ char * fixed2string(
         neg = TRUE;
         val = -val;
     }
-
     else neg = FALSE;
 
     // ***** STUDENT CODE STARTS HERE *****
@@ -128,11 +129,18 @@ char * fixed2string(
     // result is LS digit first so start at '.' in buf and go up in buffer
 
     //i is the size of the whole number portion -1 due to sign bit
-    for ( i = (radixPt + 1) ; i && whole ; i++, whole/=base )
-        //Get value to fill string
-        buf[i] = "0123456789abcdef"[whole % base];
+    if (whole > 0) {
+      for ( i = (radixPt + 1) ; i && whole ; i++, whole/=base ) {
+          //Get value to fill string
+          buf[i] = "0123456789abcdef"[whole % base];
+        }
 
-    startIndex = (neg ? i : i - 1 );
+      startIndex = (neg ? i : i + 1 );
+    } else {
+      buf[radixPt + 1] = '0';
+      startIndex = (neg ? radixPt + 2: radixPt + 1);
+    }
+
     // insert minus sign if negative
 	if ( neg == TRUE ) {
         buf[startIndex] = '-';
@@ -140,14 +148,20 @@ char * fixed2string(
 
     // convert the fraction part by continued multiplication
     // result is MS digit first so start at '.' In buf and go down in buffer
-    printf("\n\r Frac: %d \n\r", frac);
 
-    for( i = (radixPt - 1); (i >=0) && (frac > 0); i--, frac *=base) {
-      buf[i] = '0' + (frac >> noFracBits);
-      frac &=((1 << noFracBits) - 1);
+    for ( i = (radixPt - 1); (i > 0) && (frac > 0); i--)
+    {
+        frac = frac * base;
+        buf[i] = "0123456789abcdef"[ (frac >> noFracBits)];
+        frac &= ((1 << noFracBits ) - 1);
     }
 
     buf[i] = '\0'; // End of string marker
+    printf("\n\r Converted Val:\n\r");
+    for ( i = startIndex; i > 0; i--)
+    {
+    printf("%c", buf[i]);
+    }
 
     return &buf[startIndex];
 } // fixed2String
@@ -213,6 +227,7 @@ main() {
         putsU1("\r\r\n Test 1:  ");
         putsU1(fixed2string(0xffffffa0, 7, 10, 3, stringBuffer, sizeof (stringBuffer)));
         putsU1("\r\r\n");
+
 
         putsU1("\r\r\n Test 2:  ");
         putsU1(fixed2string(0x6a, 6, 10, 3, stringBuffer, sizeof (stringBuffer)));
