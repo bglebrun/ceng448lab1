@@ -157,7 +157,7 @@ char * fixed2string(
     {
         //Dec value is whole number portion of mult result
         frac *= base;
-        buf[i] =  "0123456789abcdef"[ frac >> (noFracBits + 1)];
+        buf[i] = '0' + (frac >> noFracBits);
         printf("\n\r Buf: %c\n\r", buf[i]);
         //Do mult and shift value to get rid of int portion accounting for sign bit
         //Shift back
