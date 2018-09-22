@@ -91,6 +91,7 @@ char * fixed2string(
 {
     unsigned int neg, radixPt, whole, wholeBits, frac, fracDigit, startIndex, i, j;
 
+    printf("\n\rVal: %d \n\rBase: %d", val, base);
     // Error checks
     if (noFracBits > 31) return ("ERROR noFracBits > 31");
     if (base < 2) return ("base too small");
@@ -110,7 +111,6 @@ char * fixed2string(
 
     // ***** STUDENT CODE STARTS HERE *****
 
-
     // isolate the whole [part] and the fraction [part]
     whole = val;
     frac = val;
@@ -124,32 +124,17 @@ char * fixed2string(
     j = (1 << noFracBits) - 1;
     frac = frac & j;
 
-    printf("\n\r Val: %d \n\r", val);
-    printf("\n\r Whole: %d \n\r", whole);
-    printf("\n\r Frac: %d \n\r", frac);
-    printf("\n\r FracBits: %d \n\r", noFracBits);
-    */
     // convert the whole part by continued division
     // result is LS digit first so start at '.' in buf and go up in buffer
 
-    //****REPLACE WHOLE WITH WHAT VAR BEN USES IN HIS CODE****
     //i is the size of the whole number portion -1 due to sign bit
-    for ( i = (radixPt + 1) ; i && whole ; i++ )
-    {
+    for ( i = (radixPt + 1) ; i && whole ; i++, whole/=base )
         //Get value to fill string
         buf[i] = "0123456789abcdef"[whole % base];
-        printf("\n\r Buff whole: %c \n\r", buf[i]);
-        printf("\n\r Whole: %c \n\r", whole);
-        //Do intiger division to get next val to mod with
-        whole = whole/base;
-    }
 
-    startIndex = i;
-    printf("\n\rStartIndex: %d Radix: %d\n\r", startIndex, radixPt);
-
+    startIndex = (neg ? i : i - 1 );
     // insert minus sign if negative
-	if ( neg == TRUE )
-    {
+	if ( neg == TRUE ) {
         buf[startIndex] = '-';
     }
 
@@ -168,7 +153,8 @@ char * fixed2string(
         printf("\n\r Frac: %d \n\r", (frac));
     }
 
-    buf[i] = '\0'; // End of string marker
+    i == 0 ? buff[i] = '\0' : buff[i - 1];
+    buf[i - 1] = '\0'; // End of string marker
 
     return &buf[startIndex];
 } // fixed2String
