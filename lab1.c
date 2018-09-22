@@ -91,7 +91,7 @@ char * fixed2string(
 {
     unsigned int neg, radixPt, whole, wholeBits, frac, fracDigit, startIndex, i, j;
 
-    printf("\n\r Val: %d \n\r", val);
+    printf("\n\rVal: %d \n\rBase: %d", val, base);
     // Error checks
     if (noFracBits > 31) return ("ERROR noFracBits > 31");
     if (base < 2) return ("base too small");
@@ -109,6 +109,7 @@ char * fixed2string(
 
     else neg = FALSE;
 
+    // ***** STUDENT CODE STARTS HERE *****
 
     // isolate the whole [part] and the fraction [part]
     whole = val;
@@ -120,33 +121,20 @@ char * fixed2string(
 	for( j = whole;j!=0; j = j>>1) {
         wholeBits++;
     }
-    printf("\n\r Whole: %d \n\r", whole);
     j = (1 << noFracBits) - 1;
     frac = frac & j;
-    /*
-    printf("Frac: " BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(frac));
-    printf("\n\r Val: %d \n\r", val);
-    printf("\n\r Whole: %d \n\r", whole);
-    printf("\n\r wholeBits: %d \n\r", wholeBits);
-    printf("\n\r j: %d \n\r", j);*/
 
     // convert the whole part by continued division
     // result is LS digit first so start at '.' in buf and go up in buffer
 
-    //****REPLACE WHOLE WITH WHAT VAR BEN USES IN HIS CODE****
     //i is the size of the whole number portion -1 due to sign bit
-    for ( i = (radixPt + 1) ; i < bufSize; i++ )
-    {
+    for ( i = (radixPt + 1) ; i && whole ; i++, whole/=base )
         //Get value to fill string
         buf[i] = "0123456789abcdef"[whole % base];
-        //printf("\n\r %d \n\r", whole%base );
-        //Do intiger division to get next val to mod with
-        whole = whole/base;
-    }
 
+    startIndex = (neg ? i : i - 1 );
     // insert minus sign if negative
-	if ( neg == TRUE )
-    {
+	if ( neg == TRUE ) {
         buf[startIndex] = '-';
     }
 
@@ -217,6 +205,11 @@ main() {
         putsU1(fixed2string(a, 20, 10, 3, stringBuffer, sizeof (stringBuffer)));
         putsU1("\r\r\n");
 */
+
+        putsU1("\r\r\n Student case: ");
+        putsU1(fixed2string(41, 2, 10, 4, stringBuffer, sizeof (stringBuffer)));
+        putsU1("\r\r\n");
+
         putsU1("\r\r\n Test 1:  ");
         putsU1(fixed2string(0xffffffa0, 7, 10, 3, stringBuffer, sizeof (stringBuffer)));
         putsU1("\r\r\n");
