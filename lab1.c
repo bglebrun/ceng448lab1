@@ -214,11 +214,9 @@ main() {
         printf("\r\nvolts = %f \r\n", volts);
 
         a = a * 0x0D33; // 3.3 scaled 10, product scaled 20, (adc * 3.3 / 1024) * 1024
-/*
         putsU1("\r\r\nVoltage by fixed point = ");
         putsU1(fixed2string(a, 20, 10, 3, stringBuffer, sizeof (stringBuffer)));
         putsU1("\r\r\n");
-*/
 
         putsU1("\r\r\n Student case: ");
         putsU1(fixed2string(41, 2, 10, 4, stringBuffer, sizeof (stringBuffer)));
